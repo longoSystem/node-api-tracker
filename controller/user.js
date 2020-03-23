@@ -33,7 +33,7 @@ async function createUser(request, response) {
 async function createUserAndAddress(request, response) {
     console.log('user -> controller :: createUser');
     try {
-        if (await users.getUsersByDocumento(request.body.documento) >= 1) {
+        if (await users.getUserByDocumento(request.body.documento) >= 1) {
             return response.status(401).json({
                 "status": "Error",
                 "message": "Este documento já está cadastrado."

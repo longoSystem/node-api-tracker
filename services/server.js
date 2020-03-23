@@ -2,7 +2,7 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-//const database = require('./database.js');
+const database = require('./database.js');
 const router = require('./router.js');
 
 module.exports = function () {
@@ -37,7 +37,16 @@ module.exports = function () {
       //Rota criada para testar o pool de conexoes com o banco de dados oracle.
       app.get('/status-db', async (req, res) => {
         console.info('services/server :: method -> app.get');
-        //const result = await database.executeQuery('select user, systimestamp from dual');
+        const client = await pool.connect();
+        try {
+
+          await client.query(`SELECT NOW()`);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          client.rel
+        }
+        //const result = await client.executeQuery('select user, systimestamp from dual');
         //const user = result.rows[0].USER;
         //const date = result.rows[0].SYSTIMESTAMP;
         //res.end(`DB user: ${user}\nDate: ${date}`);

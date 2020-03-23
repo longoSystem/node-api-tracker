@@ -13,17 +13,17 @@ const pool = new Pool({
 async function getUsers() {
   console.log('user -> api :: getUsers');
   try {
-    let results = await pool.query(`SELECT id, name, email, documento, null as address FROM users ORDER BY id ASC`)
+    let results = await pool.query(`SELECT id, name, email, documento, created_at "createdAt", null as address FROM users ORDER BY id ASC`)
     return results.rows || [];
   } catch (error) {
     console.log(error);
   }
 }
 
-async function getUsersByDocumento(documento) {
+async function getUserByDocumento(documento) {
   console.log('user -> api :: getUsersByDocumento');
   try {
-    let results = await pool.query(`SELECT id FROM users WHERE documento = $1`, [ documento ])
+    let results = await pool.query(`SELECT id, name, email, documento, created_at FROM users WHERE documento = $1`, [ documento ])
     return results.rowCount || [];
   } catch (error) {
     console.log(error);
@@ -82,6 +82,7 @@ async function createAddress(address) {
 
 //@Transaction
 async function createUserAndAddress(data) {
+  console.log('user -> api :: createUserAndAddress');
   const client = await pool.connect();
   try {
     await client.query('BEGIN')
@@ -110,5 +111,5 @@ module.exports = {
   getAddressByUserId,
   createAddress,
   createUserAndAddress,
-  getUsersByDocumento
+  getUserByDocumento
 }

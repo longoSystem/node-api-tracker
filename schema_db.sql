@@ -1,4 +1,3 @@
-
 DROP TABLE address;
 DROP TABLE tracking; 
 DROP TABLE tracker;
@@ -9,7 +8,9 @@ CREATE TABLE users (
   name                  VARCHAR(30) UNIQUE NOT NULL,
   email                 VARCHAR(30) UNIQUE NOT NULL,
   password              VARCHAR(100) NOT NULL,
-  documento             VARCHAR(14) UNIQUE NOT NULL 
+  documento             VARCHAR(14) UNIQUE NOT NULL,
+  created_at            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_at             TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO users (name, email, password, documento) VALUES 
@@ -27,6 +28,8 @@ CREATE TABLE address (
   city                  VARCHAR(100) NOT NULL,
   state                 VARCHAR(2) NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id),
+  created_at            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_at             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(id, user_id)
 );
 
@@ -37,18 +40,21 @@ INSERT INTO address (user_id, street, neighborhood, number, zip_code, city, stat
 
 
 CREATE TABLE tracker(
-    id                  SERIAL PRIMARY KEY,
-    user_id             BIGINT NOT NULL,
-    tracked_number      NUMERIC(11) UNIQUE NOT NULL,
-    UNIQUE(user_id, tracked_number),
-    FOREIGN KEY (user_id) REFERENCES users (id)
+  id                  SERIAL PRIMARY KEY,
+  user_id             BIGINT NOT NULL,
+  tracked_number      NUMERIC(11) UNIQUE NOT NULL,
+  active              BOOLEAN DEFAULT true,
+  created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(user_id, tracked_number),
+  FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 CREATE TABLE tracking (
-    id                  SERIAL PRIMARY KEY,
-    tracker_id          BIGINT NOT NULL,
-    DATE_HOUR           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    latitude            VARCHAR(8) NOT NULL,
-    longitude           VARCHAR(8) NOT NULL,
-    FOREIGN KEY (tracker_id) REFERENCES tracker (id)
+  id                  SERIAL PRIMARY KEY,
+  tracker_id          BIGINT NOT NULL,
+  date_hour           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  latitude            VARCHAR(8) NOT NULL,
+  longitude           VARCHAR(8) NOT NULL,
+  FOREIGN KEY (tracker_id) REFERENCES tracker (id)
 );
