@@ -4,17 +4,25 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const database = require('./database.js');
 const router = require('./router.js');
+const cors = require('cors');
 
 module.exports = function () {
 
   //atributo privado usado para carregar as definicoes do middleware Express.
   var httpServer;
 
-  //metodo privado responsavel iniciar parametrizar o middleware Express.
+  //metodo privado responsavel por parametrizar o middleware Express.
   var initialize = function () {
     console.info('services/server :: method -> initialize');
     return new Promise((resolve, reject) => {
       const app = express();
+
+      var corsOptions = {
+        origin: [ "http://localhost:8081", "http://localhost:8080"]
+      };
+      
+      app.use(cors(corsOptions));
+
       bodyParser.text({
         defaultCharset: "utf8"
       });

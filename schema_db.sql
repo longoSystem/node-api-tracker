@@ -15,8 +15,8 @@ CREATE TABLE users (
 
 INSERT INTO users (name, email, password, documento) VALUES 
     ('Juliano Longo', 'longo@heroku.com', 'pwd12345jwt', '22233344477')
-  , ('Larissa Longo', 'larissa@heroku.com', 'pwd333444jwt', '11133344477')
-  , ('Matheus Longo', 'matheus@heroku.com', 'pwd777444jwt', '77733344477');
+  , ('Albert Einsten', 'einsten.hans@heroku.com', 'pwd333444jwt', '11133344477')
+  , ('Issac Newton', 'newton.issac@heroku.com', 'pwd777444jwt', '77733344477');
 
 CREATE TABLE address (
   id                    SERIAL PRIMARY KEY,
